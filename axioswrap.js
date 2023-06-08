@@ -89,6 +89,25 @@ const getAllQuestions = async () => {
 }
 
 
+const createQuestion = async (token, data) => {
+    let error;
+    let id;
+    
+    try {
+        const res = await apiClientTokenAuth(token).post(questionEndpoint, data);
+        console.log(res);
+        id = res.data.id;
+    } catch(err){
+        error = 'An unexpected error occured. Please Try Again Later.'
+    }
+
+    return {
+        error,
+        id
+    }
+}
+
+
 
 // Code to Test Our Wrapper Functions
 
