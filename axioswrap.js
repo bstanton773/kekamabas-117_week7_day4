@@ -10,6 +10,17 @@ const apiClientNoAuth = () => axios.create({
 })
 
 
+const registerUser = async (data) => {
+    let error;
+    try{
+        await apiClientNoAuth().post(authEndpoint, data);
+    }catch(err){
+        error = 'An unexpected error occurred. Please try again later.'
+    }
+    return {
+        error
+    }
+}
 
 
 const getAllQuestions = async () => {
@@ -28,3 +39,24 @@ const getAllQuestions = async () => {
         questions
     }
 }
+
+
+
+// Code to Test Our Wrapper Functions
+
+// test registering a new user
+
+const reg = async () => {
+    let result = await registerUser(
+        {
+            "email": "mjordan23@bulls.com",
+            "first_name": "Michael",
+            "last_name": "Jordan",
+            "password": "6rings"
+        }
+    );
+    console.log(result.error??"Successfully created user");
+};;
+
+// Call function to create the user (only do it once or there will be errors)
+// reg();
