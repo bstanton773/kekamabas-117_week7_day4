@@ -16,6 +16,13 @@ const apiClientBasicAuth = (email, password) => axios.create({
     }
 })
 
+const apiClientTokenAuth = (token) => axios.create({
+    baseURL: base,
+    headers: {
+        Authorization: 'Bearer ' + token
+    }
+})
+
 
 const registerUser = async (data) => {
     let error;
@@ -44,11 +51,23 @@ const loginUser = async (email, password) => {
             error = 'An unexpected error occurred. Please try again later.'
         }
     }
-
+    
     return {
         error,
         user
     }
+}
+
+const editUser = async (token, data) => {
+    let error;
+    
+    try{
+        await apiClientTokenAuth(token).put(authEndpoint, data);
+    } catch(err){
+        error = 'An unexpected error occurred. Please try again later.'
+    }
+
+    return { error }
 }
 
 
@@ -99,8 +118,17 @@ const login = async () => {
     console.log('your token is ', result.user.token);
 }
 
-login();
+// login();
 
 
 // Save the token for our future token auth endpoints
 const myToken = 'mwftJkqXxz2cqrK2-blrcN8Xtk-4ETqzN5A84Cmz6Zk'
+
+
+// Test editing a user
+const changeUserEmail = async () => {
+    let result = await editUser(myToken, { "email": "mj23@bulls.com"});
+    console.log(result.error ?? "Successfully edited user")
+};
+
+changeUserEmail();
